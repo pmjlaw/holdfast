@@ -1,0 +1,261 @@
+{
+  "address": "7e4UKQSRh5zLvLefMWc25TRepwAsuYfVi8E8sk1CzhuN",
+  "metadata": {
+    "name": "holdfast",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "anchor_conviction",
+      "discriminator": [
+        144,
+        128,
+        98,
+        184,
+        226,
+        253,
+        210,
+        143
+      ],
+      "accounts": [
+        {
+          "name": "conviction",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  118,
+                  105,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "line",
+          "type": "u64"
+        },
+        {
+          "name": "basis_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "snapshot_slot",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "record_break",
+      "discriminator": [
+        201,
+        46,
+        22,
+        153,
+        64,
+        92,
+        182,
+        79
+      ],
+      "accounts": [
+        {
+          "name": "conviction",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  118,
+                  105,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "signer": true,
+          "relations": [
+            "conviction"
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "renew",
+      "discriminator": [
+        43,
+        239,
+        15,
+        46,
+        27,
+        7,
+        163,
+        73
+      ],
+      "accounts": [
+        {
+          "name": "conviction",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  118,
+                  105,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "signer": true,
+          "relations": [
+            "conviction"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "line",
+          "type": "u64"
+        },
+        {
+          "name": "basis_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "snapshot_slot",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "ConvictionAnchor",
+      "discriminator": [
+        187,
+        97,
+        107,
+        101,
+        122,
+        236,
+        94,
+        251
+      ]
+    }
+  ],
+  "types": [
+    {
+      "name": "ConvictionAnchor",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "line",
+            "type": "u64"
+          },
+          {
+            "name": "basis_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "snapshot_slot",
+            "type": "u64"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "break_count",
+            "type": "u32"
+          },
+          {
+            "name": "streak_start",
+            "type": "i64"
+          },
+          {
+            "name": "version",
+            "type": "u32"
+          }
+        ]
+      }
+    }
+  ]
+}
