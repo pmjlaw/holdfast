@@ -32,6 +32,7 @@ export function hashReport(r: BasisReport): string {
     legs: r.legs.map(l => ({ signature: l.signature, mint: l.mint, amount: l.amount, costUsd: l.costUsd })),
     totalCostUsd: r.totalCostUsd,
     weightedBasisUsd: r.weightedBasisUsd,
+    snapshotless: true,
   })
   return createHash('sha256').update(canonical).digest('hex')
 }
