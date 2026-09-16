@@ -1,0 +1,18 @@
+skip_local_validator = false
+
+[toolchain]
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+holdfast = "7e4UKQSRh5zLvLefMWc25TRepwAsuYfVi8E8sk1CzhuN"
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+
+[hooks]
