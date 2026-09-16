@@ -16,3 +16,6 @@ dist/
 build/
 test-ledger/
 .anchor/
+
+# SDD scratch workspace (ledger, briefs, review packages)
+.superpowers/
