@@ -35,7 +35,7 @@ export function App() {
   return (
     <main style={{ maxWidth: 720, margin: '2rem auto', fontFamily: 'system-ui' }}>
       <h1>Holdfast</h1>
-      <p>Chain-verified conviction. Know your true basis, hold the line.</p>
+      <p>Reconstruct your true cost basis. Anchor it on-chain. Defend against the next panic.</p>
       <WalletMultiButton />
       <input
         value={wallet}
