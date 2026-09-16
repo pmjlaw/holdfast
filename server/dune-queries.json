@@ -1,0 +1,17 @@
+{
+  "notes": "Solana holder tables used: solana_utils.latest_balances (current state) and solana_utils.daily_balances (historical snapshots). Both queries use COALESCE(token_balance_owner, address) to handle delegated token accounts. AMM/pool exclusion: not implemented - Dune's Solana schema does not provide a reliable flag or join path to cleanly identify AMM liquidity pool token accounts vs real holders. The concentration metric includes all token-holding addresses regardless of whether they are pools, program accounts, or EOAs. This is a known limitation of the current implementation.",
+  "concentration": {
+    "queryId": 8750356,
+    "params": ["mint", "window_days", "top_n"],
+    "rows": "[{metric: 'now'|'baseline', value: number}]",
+    "description": "Top-N holder share of circulating supply. Returns 2 rows: 'now' (current) and 'baseline' (window_days ago). Value is a 0-1 float representing the fraction of total supply held by the top N holders.",
+    "validatedWith": "BONK (DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263): baseline=0.6899, now=0.5242"
+  },
+  "whale_flow": {
+    "queryId": 8750357,
+    "params": ["mint", "window_days", "top_n"],
+    "rows": "[{metric: 'now'|'baseline', value: number}]",
+    "description": "Aggregate token balance held by top-N holders. Returns 2 rows: 'now' (current) and 'baseline' (window_days ago). Value is the absolute sum of token balances (not adjusted for decimals - raw on-chain balance).",
+    "validatedWith": "BONK (DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263): baseline=38718619455808.41, now=45317337678337.16"
+  }
+}
