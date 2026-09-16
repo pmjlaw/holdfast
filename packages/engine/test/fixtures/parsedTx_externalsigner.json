@@ -1,0 +1,12 @@
+{
+  "slot": 2000, "blockTime": 1700000500,
+  "transaction": { "signatures": ["SIG_EXT"], "message": { "accountKeys": [
+    { "pubkey": "WALLET_B", "signer": true },
+    { "pubkey": "WALLET_A", "signer": false }
+  ] } },
+  "meta": {
+    "preBalances": [9000000000, 0], "postBalances": [6000000000, 0],
+    "preTokenBalances": [],
+    "postTokenBalances": [ { "accountIndex": 1, "mint": "TARGET", "owner": "WALLET_A", "uiTokenAmount": { "uiAmount": 50 } } ]
+  }
+}
