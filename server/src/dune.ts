@@ -17,15 +17,23 @@ export async function runQuery(queryId: number, params: Record<string, string | 
     headers: { 'x-dune-api-key': apiKey, 'content-type': 'application/json' },
     body: JSON.stringify({ query_parameters: params }),
   })
+  if (!exec.ok) throw new Error(`Dune execute ${queryId}: HTTP ${exec.status}`)
   const { execution_id } = await exec.json()
+  let completed = false
   for (let i = 0; i < 30; i++) {
     await new Promise(r => setTimeout(r, 2000))
     const st = await fetch(`${BASE}/execution/${execution_id}/status`, { headers: { 'x-dune-api-key': apiKey } })
+    if (!st.ok) throw new Error(`Dune status ${queryId}: HTTP ${st.status}`)
     const { state } = await st.json()
-    if (state === 'QUERY_STATE_COMPLETED') break
+    if (state === 'QUERY_STATE_COMPLETED') {
+      completed = true
+      break
+    }
     if (state === 'QUERY_STATE_FAILED') throw new Error(`Dune query ${queryId} failed`)
   }
+  if (!completed) throw new Error(`Dune query ${queryId} timed out`)
   const res = await fetch(`${BASE}/execution/${execution_id}/results`, { headers: { 'x-dune-api-key': apiKey } })
+  if (!res.ok) throw new Error(`Dune results ${queryId}: HTTP ${res.status}`)
   const body = await res.json()
-  return body.result.rows as DuneRow[]
+  return (body.result?.rows ?? []) as DuneRow[]
 }
