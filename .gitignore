@@ -1,0 +1,18 @@
+# Privacy firewall — private validation data NEVER enters this clean-room repo
+*.private.*
+/private/
+/.validation/
+history.json
+*_state.json
+cost_basis.json
+
+# Standard
+node_modules/
+target/
+.env
+.env.*
+.DS_Store
+dist/
+build/
+test-ledger/
+.anchor/
