@@ -51,7 +51,11 @@ export function traceAcquisitionLegs(
     const { receiver, delta } = targetDeltaByOwner(tx, self, targetMint)
     if (!receiver || delta <= 0) continue
     const cost = findSolCost(tx, self)
-    const funded = !!cost && cost.wallet !== receiver
+    const feePayer = tx.transaction.message.accountKeys[0]?.pubkey ?? null
+    const externalCostFunder = cost && cost.wallet !== receiver ? cost.wallet : null
+    const externalSigner = feePayer && self.has(feePayer) && feePayer !== receiver ? feePayer : null
+    const funded = !!externalCostFunder || !!externalSigner
+    const fundingWallet = externalCostFunder ?? externalSigner ?? null
     legs.push({
       signature: tx.transaction.signatures[0],
       slot: tx.slot,
@@ -63,7 +67,7 @@ export function traceAcquisitionLegs(
       costUsd: null,
       priceConfidence: 'none',
       fundedByExternalSigner: funded,
-      fundingWallet: funded ? cost!.wallet : null,
+      fundingWallet: fundingWallet,
     })
   }
   return legs
