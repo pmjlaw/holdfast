@@ -26,4 +26,15 @@ describe('holdfast', () => {
     const acc = await program.account.convictionAnchor.fetch(pda)
     assert.equal(acc.breakCount, 1)
   })
+
+  it('renews with a version bump', async () => {
+    const newHash = new Array(32).fill(9)
+    await program.methods.renew(new anchor.BN(2000), newHash, new anchor.BN(99))
+      .accounts({ owner }).rpc()
+    const acc = await program.account.convictionAnchor.fetch(pda)
+    assert.equal(acc.line.toNumber(), 2000)
+    assert.equal(acc.snapshotSlot.toNumber(), 99)
+    assert.equal(acc.version, 1)
+    assert.equal(acc.breakCount, 1)
+  })
 })
