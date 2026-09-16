@@ -4,6 +4,7 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { buildReport, type BasisReport } from '@holdfast/engine'
 import { BasisReportView } from './components/BasisReportView'
 import { LegDiffView } from './components/LegDiffView'
+import { AnchorPanel } from './components/AnchorPanel'
 
 export function App() {
   const [wallet, setWallet] = useState('')
@@ -60,6 +61,7 @@ export function App() {
         <>
           <BasisReportView report={report} />
           <LegDiffView legs={report.legs} />
+          <AnchorPanel report={report} />
         </>
       )}
     </main>
