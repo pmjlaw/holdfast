@@ -59,11 +59,13 @@ Now that you know your true basis, commit it on-chain so future-you cannot rewri
 
 3. Click **Anchor conviction**.
 
-This calls the `anchor_conviction` instruction on the Holdfast program (deployed on devnet). The program creates a `ConvictionAnchor` PDA tied to your wallet with three fields:
+This calls the `anchor_conviction` instruction on the Holdfast program (deployed on devnet). The program creates a `ConvictionAnchor` PDA tied to your wallet with key fields:
 
-- `the_line` — your weighted average basis in micro-USD (immutable unless you call `renew` to update it)
+- `line` — your weighted average basis in micro-USD (immutable unless you call `renew` to update it)
 - `basis_hash` — the SHA-256 hash of your acquisition legs (tamper-proof ledger)
-- `broke` — a boolean flag, initially `false`
+- `break_count` — a monotonic counter of honest breaches, initially `0`
+
+The PDA also stores your wallet address (`owner`), timestamps (`created_at`, `streak_start`), and a `version` counter.
 
 The transaction settles in ~400ms. Your conviction is now on-chain.
 
@@ -79,9 +81,9 @@ If you break — if you sell below your anchored basis — you can (and should) 
 
 1. Click **Record a break (honest)**.
 
-2. This calls `record_break`, which flips the `broke` flag from `false` to `true`.
+2. This calls `record_break`, which increments `break_count` by 1 (via checked_add — it wraps safely but you'd need 4 billion breaches to overflow).
 
-**This is permanent.** The program does not implement an `unbreak` instruction. Once `broke = true`, it stays true forever.
+**This is permanent.** The program has no instruction to decrement `break_count`. Your break history only ever grows — each honest breach is a permanent mark on the chain.
 
 **Why?** Because honesty compounds. The next time you face a drawdown, you'll remember: "I broke last time. The chain has the receipt." That memory is a stake in the ground — not guilt, but data. You learn from it or you don't, but you cannot erase it.
 
@@ -92,7 +94,7 @@ If you break — if you sell below your anchored basis — you can (and should) 
 Holdfast doesn't stop at one snapshot. As you add to your position over time:
 
 1. **Trace again** with your updated wallet history.
-2. **Renew your conviction** by calling the `renew` instruction (updates `the_line` and `basis_hash` with fresh data).
+2. **Renew your conviction** by calling the `renew` instruction (updates `line` and `basis_hash` with fresh data).
 3. **Hold or break** — and record it either way.
 
 The chain becomes your accountability partner. Not your conscience, not your advisor — just an immutable ledger of what you said you'd do, and what you actually did.

@@ -16,7 +16,7 @@ Holdfast is a monorepo with three pieces:
 
 - **`packages/engine`** — off-chain basis reconstruction engine. Reads transaction history from Solana mainnet, traces SPL token flows across wallets, prices acquisition legs at block time, and produces a verifiable `BasisReport` with a SHA-256 hash.
 
-- **`programs/holdfast`** — Anchor program deployed on devnet. Stores a `ConvictionAnchor` PDA per user with three fields: `the_line` (your cost basis in micro-USD), `basis_hash` (SHA-256 of the acquisition legs), and `broke` (immutable breach flag). Three instructions: `anchor_conviction` (commit your basis), `record_break` (honest breach, permanent), `renew` (update basis as you add to the position).
+- **`programs/holdfast`** — Anchor program deployed on devnet. Stores a `ConvictionAnchor` PDA per user with key fields: `line` (your cost basis in micro-USD), `basis_hash` (SHA-256 of the acquisition legs), and `break_count` (monotonic counter of honest breaches). The PDA also stores `owner`, timestamps (`created_at`, `streak_start`), and a `version` counter. Three instructions: `anchor_conviction` (commit your basis), `record_break` (increment break counter, permanent), `renew` (update basis as you add to the position).
 
 - **`app/`** — Vite + React frontend. Paste a wallet, trace its on-chain history, see the acquisition legs single-wallet trackers miss, and anchor your conviction on devnet.
 
