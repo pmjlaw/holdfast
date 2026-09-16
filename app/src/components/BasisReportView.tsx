@@ -6,7 +6,7 @@ export function BasisReportView({ report }: { report: BasisReport }) {
     <section>
       <h2>True basis ${report.weightedBasisUsd.toFixed(4)}</h2>
       <p>{report.totalAcquired.toLocaleString()} tokens · drawdown {dd}% · ${report.distanceToBreakevenUsd.toLocaleString()} to breakeven</p>
-      <p>Reconciled: {report.reconciled ? '✅ tie-out clean' : '⚠️ drift — verify'}</p>
+      <p>Self-consistency: {report.reconciled ? '✅ arithmetic ties out' : '⚠️ internal drift'}</p>
     </section>
   )
 }

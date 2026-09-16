@@ -89,6 +89,8 @@ Connect a devnet wallet (Phantom in devnet mode) to anchor your conviction on-ch
 
 - **Multi-user:** The current PDA design ties one `ConvictionAnchor` to one wallet. Supporting aggregated basis across multiple wallets (the "one position, three wallets" use case) requires a cross-wallet PDA architecture — straightforward but out of MVP scope.
 
+- **Reconciliation:** The reconcile step is an internal arithmetic self-consistency assertion (it confirms the leg costs sum consistently within the engine's pricing logic) — it is NOT an independent cross-validation against a second price source. Widening it to independently-sourced re-pricing is a fast-follow.
+
 ## Privacy
 
 This is a **clean-room repo**. No personal wallet addresses, no real cost-basis data, no position sizes. The narrative is authentic — the builder's arc is real — but the specifics stay private.

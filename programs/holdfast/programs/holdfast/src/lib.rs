@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("7e4UKQSRh5zLvLefMWc25TRepwAsuYfVi8E8sk1CzhuN"); // replace with `anchor keys sync` output
+declare_id!("7e4UKQSRh5zLvLefMWc25TRepwAsuYfVi8E8sk1CzhuN");
 
 #[program]
 pub mod holdfast {

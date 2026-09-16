@@ -25,8 +25,9 @@ export function createLlamaPricer(fetchFn: typeof fetch = fetch): Pricer {
 
 export async function priceLegs(legs: AcquisitionLeg[], pricer: Pricer): Promise<AcquisitionLeg[]> {
   return Promise.all(legs.map(async (leg) => {
-    if (!leg.costInputMint) return { ...leg, costUsd: 0, priceConfidence: 'none' as const }
+    if (!leg.costInputMint) return { ...leg, costUsd: null, priceConfidence: 'none' as const }
     const { price, confidence } = await pricer.priceAt(leg.costInputMint, leg.blockTime)
-    return { ...leg, costUsd: leg.costInputAmount * price, priceConfidence: confidence }
+    const costUsd = price > 0 ? leg.costInputAmount * price : null
+    return { ...leg, costUsd, priceConfidence: confidence }
   }))
 }

@@ -11,7 +11,9 @@ export function computeBasisReport(input: BasisInput): BasisReport {
   const totalAcquired = legs.reduce((s, l) => s + l.amount, 0)
   const { primaryCostUsd, agree } = reconcile(legs)
   const totalCostUsd = primaryCostUsd
-  const weightedBasisUsd = totalAcquired > 0 ? totalCostUsd / totalAcquired : 0
+  const pricedLegs = legs.filter(l => l.costUsd !== null)
+  const pricedAcquired = pricedLegs.reduce((s, l) => s + l.amount, 0)
+  const weightedBasisUsd = pricedAcquired > 0 ? totalCostUsd / pricedAcquired : 0
   const currentValueUsd = totalAcquired * currentPriceUsd
   const drawdownPct = weightedBasisUsd > 0 ? (currentPriceUsd - weightedBasisUsd) / weightedBasisUsd : 0
   const distanceToBreakevenUsd = Math.max(0, (weightedBasisUsd - currentPriceUsd) * totalAcquired)

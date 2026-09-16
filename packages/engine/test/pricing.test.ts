@@ -20,7 +20,7 @@ describe('pricing', () => {
     expect(out.priceConfidence).toBe('exact')
   })
 
-  it('treats null-cost legs as zero', async () => {
+  it('treats unpriceable legs as null cost', async () => {
     const pricer = createLlamaPricer(mockFetch)
     const leg: AcquisitionLeg = {
       signature: 's', slot: 1, blockTime: 1700000000, mint: 'TARGET', amount: 5,
@@ -28,6 +28,7 @@ describe('pricing', () => {
       priceConfidence: 'none', fundedByExternalSigner: false, fundingWallet: null,
     }
     const [out] = await priceLegs([leg], pricer)
-    expect(out.costUsd).toBe(0)
+    expect(out.costUsd).toBeNull()
+    expect(out.priceConfidence).toBe('none')
   })
 })
