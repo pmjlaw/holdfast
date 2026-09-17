@@ -77,6 +77,18 @@ The three signals fold into an overall verdict:
 
 **AMM-noise filter:** A concentration alarm (top-holder share dropping) is demoted to warn when rising pool liquidity explains the drop. This defends against "AMM inventory masquerading as a distributing whale" — a common false positive.
 
+### The rigor kill: how we caught a false CRACKING on BONK
+
+This is the beat that separates Holdfast from a naive dashboard.
+
+Every on-chain-holder query reads Solana balances from a change-event table — a row exists only for the days an account *moved*. Ask the naive question — "what were the top holders' balances on the baseline day?" — and you only see accounts that happened to transact that exact day. For BONK, one baseline day indexed **3,221 accounts** against **1,016,914** live today — a **316× undercount**.
+
+That artifact breaks concentration *twice*: it deflates the denominator (total supply seen) **and** drops most whales out of the top-N numerator. The naive verdict comes back **CRACKING** — a manufactured alarm off a snapshot hole, not a real distribution event.
+
+Holdfast forward-fills: for each holder it reconstructs the last-known balance *as of* the baseline day (`ROW_NUMBER() … ORDER BY day DESC`, filtered to `balance > 0` after the dedupe, so wallets that zeroed out are correctly excluded). That recovers **1,008,559** baseline holders instead of 3,221. Real concentration: **51.7% → 52.4%** over the window — flat-to-rising. Correct verdict: **INTACT**.
+
+**The pitch is the rigor.** Naive tools scream CRACKING off a snapshot artifact; Holdfast detects the artifact and says INTACT — and every number on screen carries the query and the on-chain source so **you can chain-verify it yourself**. Trust by construction, not by assertion.
+
 **Why this matters:** A position can have solid cost basis but a broken thesis. Holdfast tells you both, so you can make an informed decision rather than flying blind.
 
 ---

@@ -11,7 +11,19 @@ export function rowsToMetric(rows: DuneRow[]): ThesisMetric | null {
 
 const BASE = 'https://api.dune.com/api/v1'
 
+async function fetchCachedRows(queryId: number, params: Record<string, string | number>, apiKey: string): Promise<DuneRow[] | null> {
+  const qs = new URLSearchParams()
+  for (const [k, v] of Object.entries(params)) qs.set(`params.${k}`, String(v))
+  const res = await fetch(`${BASE}/query/${queryId}/results?${qs}`, { headers: { 'x-dune-api-key': apiKey } })
+  if (!res.ok) return null
+  const body = await res.json()
+  const rows = body.result?.rows as DuneRow[] | undefined
+  return rows && rows.length ? rows : null
+}
+
 export async function runQuery(queryId: number, params: Record<string, string | number>, apiKey: string): Promise<DuneRow[]> {
+  const cached = await fetchCachedRows(queryId, params, apiKey)
+  if (cached) return cached
   const exec = await fetch(`${BASE}/query/${queryId}/execute`, {
     method: 'POST',
     headers: { 'x-dune-api-key': apiKey, 'content-type': 'application/json' },
