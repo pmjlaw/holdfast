@@ -1,4 +1,4 @@
-# Holdfast Demo Script
+# Conviction Demo Script
 
 **5-beat walkthrough: Paste → Truth → Thesis health → Anchor → Confront**
 
@@ -10,7 +10,7 @@ In 2021, I entered crypto. By early 2023, I held a life-changing position — th
 
 I watched the tokens I sold climb 4× from where I exited.
 
-Holdfast is the machine I wish I'd had: it reconstructs the truth, checks whether the thesis still holds, anchors it immutably on-chain, and defends against the next moment of weakness.
+Conviction is the machine I wish I'd had: it reconstructs the truth, checks whether the thesis still holds, anchors it immutably on-chain, and defends against the next moment of weakness.
 
 ---
 
@@ -20,11 +20,11 @@ Holdfast is the machine I wish I'd had: it reconstructs the truth, checks whethe
 
 2. **Paste a wallet address** into the input field. Any Solana wallet that holds an SPL token works — use your own, or try a public wallet with known token holdings.
 
-3. **Set the target token mint** (defaults to BONK: `DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263`). This tells Holdfast which token's basis you want to reconstruct.
+3. **Set the target token mint** (defaults to BONK: `DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263`). This tells Conviction which token's basis you want to reconstruct.
 
 4. Click **Trace**.
 
-Holdfast reads the wallet's full on-chain transaction history from Solana mainnet, identifies every SPL token transfer that increased the target token balance, and prices each acquisition leg at the block timestamp.
+Conviction reads the wallet's full on-chain transaction history from Solana mainnet, identifies every SPL token transfer that increased the target token balance, and prices each acquisition leg at the block timestamp.
 
 **Output:** A `BasisReport` with three key fields:
 - **Total acquired** — the sum of all inbound legs
@@ -35,7 +35,7 @@ Holdfast reads the wallet's full on-chain transaction history from Solana mainne
 
 ## Beat 2: Leg Diff — What Trackers Miss
 
-Scroll to the **Acquisition Legs** section. This is where Holdfast's value becomes concrete.
+Scroll to the **Acquisition Legs** section. This is where Conviction's value becomes concrete.
 
 Each leg shows:
 - **Amount** — tokens acquired in this transaction
@@ -45,7 +45,7 @@ Each leg shows:
 
 **The lie trackers tell:** When you transfer tokens from Wallet A to Wallet B, single-wallet trackers see Wallet B's inbound as a "free receive" and report zero cost basis. They don't know you paid for those tokens in Wallet A.
 
-**What Holdfast shows:** The full trail. Every acquisition leg, across all your wallets, with verifiable on-chain signatures. No "free" tokens — just honest accounting.
+**What Conviction shows:** The full trail. Every acquisition leg, across all your wallets, with verifiable on-chain signatures. No "free" tokens — just honest accounting.
 
 ---
 
@@ -55,7 +55,7 @@ Knowing your true basis is only half the answer. The other half: **does the thes
 
 1. Scroll to the **Thesis Health** section (or click **Check thesis health** if you haven't already).
 
-Holdfast queries Dune Analytics for three on-chain signals:
+Conviction queries Dune Analytics for three on-chain signals:
 
 - **Concentration** — top-holder share. If the top holders control a growing share, the base is stable. If their share is dropping fast, they may be distributing.
 - **Whale flow** — large-holder net flow. Are whales accumulating (positive flow) or exiting (negative)?
@@ -73,23 +73,23 @@ The three signals fold into an overall verdict:
 
 **Transparent reasoning:** The UI shows you the raw inputs — exact concentration percentage, whale flow direction, pool depth — plus the baseline each signal is compared against, plus the reason for any warn/alarm status. Never a black box.
 
-**Honest degrade:** If a signal is unavailable (e.g., Dune query times out), it degrades to a `warn` marked "unavailable" — Holdfast never fabricates data to keep the verdict green.
+**Honest degrade:** If a signal is unavailable (e.g., Dune query times out), it degrades to a `warn` marked "unavailable" — Conviction never fabricates data to keep the verdict green.
 
 **AMM-noise filter:** A concentration alarm (top-holder share dropping) is demoted to warn when rising pool liquidity explains the drop. This defends against "AMM inventory masquerading as a distributing whale" — a common false positive.
 
 ### The rigor kill: how we caught a false CRACKING on BONK
 
-This is the beat that separates Holdfast from a naive dashboard.
+This is the beat that separates Conviction from a naive dashboard.
 
 Every on-chain-holder query reads Solana balances from a change-event table — a row exists only for the days an account *moved*. Ask the naive question — "what were the top holders' balances on the baseline day?" — and you only see accounts that happened to transact that exact day. For BONK, one baseline day indexed **3,221 accounts** against **1,016,914** live today — a **316× undercount**.
 
 That artifact breaks concentration *twice*: it deflates the denominator (total supply seen) **and** drops most whales out of the top-N numerator. The naive verdict comes back **CRACKING** — a manufactured alarm off a snapshot hole, not a real distribution event.
 
-Holdfast forward-fills: for each holder it reconstructs the last-known balance *as of* the baseline day (`ROW_NUMBER() … ORDER BY day DESC`, filtered to `balance > 0` after the dedupe, so wallets that zeroed out are correctly excluded). That recovers **1,008,559** baseline holders instead of 3,221. Real concentration: **51.7% → 52.4%** over the window — flat-to-rising. Correct verdict: **INTACT**.
+Conviction forward-fills: for each holder it reconstructs the last-known balance *as of* the baseline day (`ROW_NUMBER() … ORDER BY day DESC`, filtered to `balance > 0` after the dedupe, so wallets that zeroed out are correctly excluded). That recovers **1,008,559** baseline holders instead of 3,221. Real concentration: **51.7% → 52.4%** over the window — flat-to-rising. Correct verdict: **INTACT**.
 
-**The pitch is the rigor.** Naive tools scream CRACKING off a snapshot artifact; Holdfast detects the artifact and says INTACT — and every number on screen carries the query and the on-chain source so **you can chain-verify it yourself**. Trust by construction, not by assertion.
+**The pitch is the rigor.** Naive tools scream CRACKING off a snapshot artifact; Conviction detects the artifact and says INTACT — and every number on screen carries the query and the on-chain source so **you can chain-verify it yourself**. Trust by construction, not by assertion.
 
-**Why this matters:** A position can have solid cost basis but a broken thesis. Holdfast tells you both, so you can make an informed decision rather than flying blind.
+**Why this matters:** A position can have solid cost basis but a broken thesis. Conviction tells you both, so you can make an informed decision rather than flying blind.
 
 ---
 
@@ -103,7 +103,7 @@ Now that you know your true basis, commit it on-chain so future-you cannot rewri
 
 3. Click **Anchor conviction**.
 
-This calls the `anchor_conviction` instruction on the Holdfast program (deployed on devnet). The program creates a `ConvictionAnchor` PDA tied to your wallet with key fields:
+This calls the `anchor_conviction` instruction on the Conviction program (deployed on devnet). The program creates a `ConvictionAnchor` PDA tied to your wallet with key fields:
 
 - `line` — your weighted average basis in micro-USD (immutable unless you call `renew` to update it)
 - `basis_hash` — the SHA-256 hash of your acquisition legs (tamper-proof ledger)
@@ -119,7 +119,7 @@ The transaction settles in ~400ms. Your conviction is now on-chain.
 
 ## Beat 5: Record Break (Honest Mode)
 
-Holdfast doesn't prevent you from selling. It prevents you from lying to yourself about it.
+Conviction doesn't prevent you from selling. It prevents you from lying to yourself about it.
 
 If you break — if you sell below your anchored basis — you can (and should) record that breach honestly.
 
@@ -135,7 +135,7 @@ If you break — if you sell below your anchored basis — you can (and should) 
 
 ## The Discipline Loop
 
-Holdfast doesn't stop at one snapshot. As you add to your position over time:
+Conviction doesn't stop at one snapshot. As you add to your position over time:
 
 1. **Trace again** with your updated wallet history.
 2. **Check thesis health** — are the fundamentals still intact, or degrading?

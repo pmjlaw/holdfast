@@ -35,7 +35,7 @@ export function App() {
 
   return (
     <main style={{ maxWidth: 720, margin: '2rem auto', fontFamily: 'system-ui' }}>
-      <h1>Holdfast</h1>
+      <h1>Conviction</h1>
       <p>Know your real basis. Know if your thesis still holds. Hold the line — or break it honestly.</p>
       <WalletMultiButton />
       <input

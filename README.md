@@ -1,10 +1,10 @@
-# Holdfast
+# Conviction
 
 **Conviction OS: Truth → Thesis health → Discipline**
 
-Most tools tell you what you own. Holdfast tells you whether you should still believe in it.
+Most tools tell you what you own. Conviction tells you whether you should still believe in it.
 
-Holdfast is a conviction operating system for crypto holders: it reconstructs the true cost basis of any Solana SPL token position (Truth), checks whether your thesis still holds (Thesis health), and anchors that conviction immutably on-chain (Discipline). Built for the builder who entered crypto in 2021, dispersed a life-changing position to impatience in 2023, and needed the machine that reconstructs truth and defends against the next panic.
+Conviction is an operating system for crypto conviction: it reconstructs the true cost basis of any Solana SPL token position (Truth), checks whether your thesis still holds (Thesis health), and anchors that conviction immutably on-chain (Discipline). Built for the builder who entered crypto in 2021, dispersed a life-changing position to impatience in 2023, and needed the machine that reconstructs truth and defends against the next panic.
 
 ## The Problem
 
@@ -12,11 +12,11 @@ Single-wallet trackers lie by omission. When you acquire a token across multiple
 
 But knowing your basis is only half the answer. Conviction also requires knowing whether the thesis that justified your entry still holds — is the holder base still intact, or distributing? Are whales accumulating or exiting? Is liquidity growing or collapsing?
 
-Without verifiable truth and thesis health, conviction has no anchor. You sell into fear because you don't know what you really paid, and you don't know if the fundamentals that justified the hold still stand. Holdfast fixes both: it walks the full on-chain trail across all your wallets, checks whether your thesis is still intact, and commits that conviction on-chain where future-you cannot rewrite it.
+Without verifiable truth and thesis health, conviction has no anchor. You sell into fear because you don't know what you really paid, and you don't know if the fundamentals that justified the hold still stand. Conviction fixes both: it walks the full on-chain trail across all your wallets, checks whether your thesis is still intact, and commits that conviction on-chain where future-you cannot rewrite it.
 
 ## Architecture: Three Pillars
 
-Holdfast is a conviction loop across three pillars:
+Conviction runs a single loop across three pillars:
 
 ### Pillar 1: Truth (cost basis reconstruction)
 
