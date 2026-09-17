@@ -4,6 +4,26 @@
 
 ---
 
+## Pre-demo setup (run ~5 min before)
+
+The first thesis call on a token executes fresh Dune queries (~4 min forward-fill). Warm the BONK cache once so the live demo serves instantly.
+
+```bash
+# 1. Put your Dune key in server/.env (never commit it — it's gitignored)
+cp server/.env.example server/.env
+$EDITOR server/.env          # set DUNE_API_KEY=...
+
+# 2. Start the thesis server (auto-loads server/.env)
+cd server && pnpm dev        # -> thesis server on :8787
+
+# 3. Warm the BONK cache (blocks ~4 min on first run, then instant forever)
+curl 'http://localhost:8787/api/thesis?mint=DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263&windowDays=7'
+```
+
+A well-formed verdict JSON (INTACT/CRACKING/BROKEN with signal inputs) means the cache is warm. During the demo, the same call returns from Dune's cache in under a second.
+
+---
+
 ## The Builder's Arc
 
 In 2021, I entered crypto. By early 2023, I held a life-changing position — thousands of tokens acquired across multiple wallets through staking rewards, transfers, and swaps. When the market turned in 2023, I panicked. Single-wallet trackers showed "free receives" where I'd actually paid real cost. Flying blind on my true basis — and with no way to check whether the thesis still held — I dispersed the position into fear.
