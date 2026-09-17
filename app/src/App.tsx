@@ -4,6 +4,7 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { buildReport, type BasisReport } from '@holdfast/engine'
 import { BasisReportView } from './components/BasisReportView'
 import { LegDiffView } from './components/LegDiffView'
+import { ThesisPanel } from './components/ThesisPanel'
 import { AnchorPanel } from './components/AnchorPanel'
 
 export function App() {
@@ -35,7 +36,7 @@ export function App() {
   return (
     <main style={{ maxWidth: 720, margin: '2rem auto', fontFamily: 'system-ui' }}>
       <h1>Holdfast</h1>
-      <p>Reconstruct your true cost basis. Anchor it on-chain. Defend against the next panic.</p>
+      <p>Know your real basis. Know if your thesis still holds. Hold the line — or break it honestly.</p>
       <WalletMultiButton />
       <input
         value={wallet}
@@ -61,6 +62,7 @@ export function App() {
         <>
           <BasisReportView report={report} />
           <LegDiffView legs={report.legs} />
+          <ThesisPanel mint={targetMint} />
           <AnchorPanel report={report} />
         </>
       )}
