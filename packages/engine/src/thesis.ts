@@ -45,7 +45,7 @@ function classify(spec: SignalSpec, metric: ThesisMetric | null): ThesisSignal {
   const bearishDelta = spec.bearish === 'down' ? -changePct : changePct
   let status: SignalStatus = 'ok'
   if (bearishDelta >= spec.alarmPct) status = 'alarm'
-  else if (Math.abs(changePct) >= spec.warnPct) status = 'warn'
+  else if (bearishDelta >= spec.warnPct) status = 'warn'
   const dir = changePct >= 0 ? 'up' : 'down'
   const note = `${(changePct * 100).toFixed(1)}% ${dir} over window`
   return { key: spec.key, label: spec.label, value: metric.value, baseline: metric.baseline, changePct, status, note }
