@@ -51,6 +51,15 @@ function classify(spec: SignalSpec, metric: ThesisMetric | null): ThesisSignal {
   return { key: spec.key, label: spec.label, value: metric.value, baseline: metric.baseline, changePct, status, note }
 }
 
+function applyNoiseFilter(signals: ThesisSignal[]): void {
+  const concentration = signals.find(s => s.key === 'concentration')
+  const liquidity = signals.find(s => s.key === 'liquidity')
+  if (concentration?.status === 'alarm' && liquidity && liquidity.changePct !== null && liquidity.changePct >= 0.15) {
+    concentration.status = 'warn'
+    concentration.note += ' — likely AMM liquidity, not distribution'
+  }
+}
+
 export function foldVerdict(signals: ThesisSignal[]): ThesisVerdict {
   const alarms = signals.filter(s => s.status === 'alarm').length
   const warns = signals.filter(s => s.status === 'warn').length
@@ -67,6 +76,7 @@ export function assembleThesisReport(input: {
 }): ThesisReport {
   const keys: SignalKey[] = Object.keys(input.metrics) as SignalKey[]
   const signals = keys.map(k => classify(SIGNAL_SPECS[k], input.metrics[k] ?? null))
+  applyNoiseFilter(signals)
   return {
     targetMint: input.targetMint,
     windowDays: input.windowDays,

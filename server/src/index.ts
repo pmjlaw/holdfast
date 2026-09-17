@@ -12,7 +12,7 @@ app.get('/api/thesis', async (req, res) => {
   const windowDays = Number(req.query.windowDays ?? 7)
   if (!mint) return res.status(400).json({ error: 'mint required' })
   const metrics: Partial<Record<SignalKey, ThesisMetric | null>> = {}
-  for (const key of ['concentration', 'whale_flow'] as SignalKey[]) {
+  for (const key of ['concentration', 'whale_flow', 'liquidity'] as SignalKey[]) {
     try {
       const rows = await runQuery(queries[key].queryId, { mint, window_days: windowDays, top_n: 20 }, KEY)
       metrics[key] = rowsToMetric(rows)

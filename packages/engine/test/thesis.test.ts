@@ -63,4 +63,17 @@ describe('assembleThesisReport', () => {
     expect(c.note).toMatch(/unavailable/i)
     expect(c.value).toBeNull()
   })
+
+  it('demotes a concentration alarm explained by rising liquidity', () => {
+    const r = assembleThesisReport({
+      targetMint: mint, windowDays: 7, asOf: 100,
+      metrics: {
+        concentration: { value: 0.40, baseline: 0.50 },
+        liquidity:     { value: 1.30, baseline: 1.00 },
+      },
+    })
+    const c = r.signals.find(s => s.key === 'concentration')!
+    expect(c.status).toBe('warn')
+    expect(c.note).toMatch(/liquidity/i)
+  })
 })

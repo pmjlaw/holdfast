@@ -13,5 +13,13 @@
     "rows": "[{metric: 'now'|'baseline', value: number}]",
     "description": "Aggregate token balance held by top-N holders. Returns 2 rows: 'now' (current) and 'baseline' (window_days ago). Value is the absolute sum of token balances (not adjusted for decimals - raw on-chain balance).",
     "validatedWith": "BONK (DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263): baseline=38718619455808.41, now=45317337678337.16"
+  },
+  "liquidity": {
+    "queryId": 8753949,
+    "params": ["mint", "window_days", "top_n"],
+    "rows": "[{metric: 'now'|'baseline', value: number}]",
+    "description": "DEX pool depth (aggregate vault balances for the mint). Returns 2 rows: 'now' (current) and 'baseline' (latest daily snapshot at/before window_days ago). Value is the sum of token balances across pool vaults.",
+    "validatedWith": "BONK (DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263): baseline=304706391526.99, now=307241033309.91",
+    "notes": "Pool vaults for the liquidity signal are identified positively from dex_solana.trades vaults (complements the AMM program-owner exclusion used by the holder queries)."
   }
 }
